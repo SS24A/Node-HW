@@ -6,21 +6,20 @@ const port = 8080
 const server = http.createServer((req, res) => {
     fs.readFile(`./Dog_breeds${req.url}.html`, "utf-8", (err, data) => {
         if (err) {
-            res.writeHead(404, { "content-type": "text/html" })
-            res.write("Page not found")
+            res.writeHead(404, { "Content-Type": "text/html" })
+            res.write("Page not found.")
             res.end()
         } else {
-            res.writeHead(200, { "content-type": "text/html" })
+            res.writeHead(200, { "Content-Type": "text/html" })
             res.write(data)
             res.end()
         }
     })
-
 })
 
 server.listen(port, (err) => {
     if (err) {
-        console.log("Error, the server is not started") //
+        console.log("Error, the server cannot be started")
         return
     }
     console.log(`Server started listening on port ${port}`)

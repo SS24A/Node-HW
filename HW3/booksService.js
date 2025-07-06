@@ -28,7 +28,7 @@ const addOne = async (data) => {
     try {
         const result = await booksModel.insertOne(data)
         console.log(result)
-        return result
+        return { ...data, _id: result.insertedId }
     } catch (err) {
         console.log(err)
     }

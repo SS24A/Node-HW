@@ -41,7 +41,7 @@ const login = async (req, res) => {
         if (password !== userExists.password) {
             return res.status(400).json({ error: "Incorrect password" })
         }
-        const token = jwt.sign({ username: userExists.username, email, role: userExists.role }, process.env.SECRET, { expiresIn: "7d" });
+        const token = jwt.sign({ username: userExists.username, email, role: userExists.role }, process.env.SECRET, { expiresIn: "7d" }); //id od DB namesto email?
         res.status(201).json({ token: token })
     } catch (err) {
         console.log(err)

@@ -5,7 +5,7 @@ const usersModel = client.db("HW3").collection("users")
 const registerDB = async (data) => {
     try {
         const user = await usersModel.insertOne(data)
-        return user
+        return { ...data, _id: user.insertedId }
     } catch (err) {
         console.log(err)
     }

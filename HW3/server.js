@@ -7,13 +7,19 @@ const port = 8085
 
 const booksRouter = require("./booksControllers")
 const usersRouter = require("./usersControllers")
-const { connectToDB } = require("./DB")
+const authenticate = require("./authenticate.middleware")
 
+const { connectToDB } = require("./DB")
 connectToDB()
 
 app.use(express.json())
-app.use("/books", booksRouter)
+
 app.use("/users", usersRouter)
+
+app.use(authenticate)
+
+app.use("/books", booksRouter)
+
 
 app.listen(port, (err) => {
     if (err) {

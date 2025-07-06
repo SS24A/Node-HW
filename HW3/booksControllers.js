@@ -1,5 +1,4 @@
 const express = require("express")
-const jwt = require('jsonwebtoken');
 
 const { getAll, getOne, addOne, updateOne, deleteOne } = require("./booksService")
 
@@ -61,29 +60,10 @@ const deleteBook = async (req, res) => {
     }
 }
 
-const checkRole = (req, res, next) => {
-    if (req.method !== "GET") {
-        if (req.headers && req.headers.authorization) {
-            jwt.verify(req.headers.authorization, process.env.SECRET, function (err, decoded) {
-                if (err) {
-                    return res.status(400).json({ error: err })
-                }
-                if (decoded.role !== "admin") {
-                    return res.status(404).json({ message: "No permission" })
-                }
-                next()
-            })
-        } else {
-            return res.status(404).json({ message: "No permission" })
-        }
-    }
-}
-
 booksRouter.get("/", getAllBooks)
 booksRouter.get("/:id", getOneBook)
-
-booksRouter.post("/", checkRole, addBook)
-booksRouter.put("/:id", checkRole, updateBook)
-booksRouter.delete("/:id", checkRole, deleteBook)
+booksRouter.post("/", addBook)
+booksRouter.put("/:id", updateBook)
+booksRouter.delete("/:id", deleteBook)
 
 module.exports = booksRouter
