@@ -19,8 +19,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(port, (err) => {
     if (err) {
-        console.log("Error, the server cannot be started")
-        return
+        return console.log("Error, the server cannot be started", err)
     }
     console.log(`Server started listening on port ${port}`)
 })
