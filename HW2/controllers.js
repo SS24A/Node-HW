@@ -55,7 +55,7 @@ const updateUser = (req, res) => {
     if (password) updateObj.password = password
 
     const updatedUser = usersService.updateOne(req.params.id, updateObj)
-    res.status(200).json({ message: `User updated: ${updatedUser}` })
+    res.status(200).json({ updatedUser })
 }
 
 const deleteUser = (req, res) => {
@@ -63,7 +63,7 @@ const deleteUser = (req, res) => {
     if (!deletedUser) {
         return res.status(404).json({ error: "User not found" })
     }
-    res.status(200).json({ message: `User deleted: ${deletedUser}` })
+    res.status(200).json({ deletedUser })
 }
 
 module.exports = { getAllUsers, getOneUser, addUser, updateUser, deleteUser }
