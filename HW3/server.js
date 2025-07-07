@@ -5,8 +5,8 @@ dotenv.config()
 const app = express()
 const port = 8085
 
-const booksRouter = require("./booksControllers")
-const usersRouter = require("./usersControllers")
+const booksRouter = require("./books/booksControllers")
+const usersRouter = require("./users/usersControllers")
 const authenticate = require("./authenticate.middleware")
 
 const { connectToDB } = require("./DB")
@@ -15,9 +15,7 @@ connectToDB()
 app.use(express.json())
 
 app.use("/users", usersRouter)
-
 app.use(authenticate)
-
 app.use("/books", booksRouter)
 
 app.use((req, res) => {
@@ -26,8 +24,7 @@ app.use((req, res) => {
 
 app.listen(port, (err) => {
     if (err) {
-        console.log("Error, the server is not started") //
-        return
+        return console.log("Error, the server cannot be started", err)
     }
     console.log(`Server started listening on port ${port}`)
 })

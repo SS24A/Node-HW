@@ -17,6 +17,9 @@ const getAllBooks = async (req, res) => {
 const getOneBook = async (req, res) => {
     try {
         const book = await getOne(req.params.id)
+        if (!book) {
+            return res.status(404).json({ error: 'Book not found' });
+        }
         res.status(200).json(book)
     } catch (err) {
         console.log(err)
@@ -28,10 +31,10 @@ const addBook = async (req, res) => {
     const { title, author, year } = req.body
     try {
         if (!title || !author || !year) {
-            return res.status(400).json({ error: "title, author and year are required informations" })
+            return res.status(400).json({ error: "Incomplete data: Title, Author and Year are required informations" })
         }
-        const result = await addOne({ title, author, year })
-        res.status(201).json({ _id: result.insertedId, title, author, year })
+        const newBook = await addOne({ title, author, year })
+        res.status(201).json(newBook)
     } catch (err) {
         console.log(err)
         return res.status(500).json({ error: "Internal server error" })
@@ -39,10 +42,18 @@ const addBook = async (req, res) => {
 }
 
 const updateBook = async (req, res) => {
+    const { title, author, year } = req.body
+    const updateObj = {}
+    if (title) updateObj.title = title
+    if (author) updateObj.author = author
+    if (year) updateObj.year = year
+
     try {
-        const result = await updateOne(req.params.id, req.body)
-        console.log(result, "in handler")
-        res.status(200).json({ message: "book updated" })
+        const result = await updateOne(req.params.id, updateObj)
+        if (!result) {
+            return res.status(404).json({ error: 'Book not found' });
+        }
+        res.status(200).json({ updatedBook: { ...result, ...updateObj } })
     } catch (err) {
         console.log(err)
         return res.status(500).json({ error: "Internal server error" })
@@ -51,9 +62,11 @@ const updateBook = async (req, res) => {
 
 const deleteBook = async (req, res) => {
     try {
-        const result = await deleteOne(req.params.id)
-        console.log(result, "in handler")
-        res.status(200).json({ message: "book deleted" })
+        const deletedBook = await deleteOne(req.params.id)
+        if (!deletedBook) {
+            return res.status(404).json({ error: 'Book not found' });
+        }
+        res.status(200).json({ deletedBook })
     } catch (err) {
         console.log(err)
         return res.status(500).json({ error: "Internal server error" })

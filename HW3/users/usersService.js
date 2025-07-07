@@ -1,5 +1,4 @@
-const { client } = require("./DB")
-
+const { client } = require("../DB")
 const usersModel = client.db("HW3").collection("users")
 
 const registerDB = async (data) => {
@@ -13,9 +12,8 @@ const registerDB = async (data) => {
 
 const getUserByEmail = async (email) => {
     try {
-        const result = await usersModel.findOne({ email })
-        console.log(result)
-        return result
+        const user = await usersModel.findOne({ email })
+        return user
     } catch (err) {
         console.log(err)
     }
